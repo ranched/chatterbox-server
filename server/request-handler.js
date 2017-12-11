@@ -37,8 +37,20 @@ var requestHandler = function(request, response) {
 
     response.writeHead(201, defaultCorsHeaders);
     response.end(storeData.results);
+
   } else {
+
+    if(request.url !== '/classes/messages') {
+      console.log("message");
+
+      request.on('end', function(data) {
+        response.writeHead(404, defaultCorsHeaders);
+        response.end(storeData.results);  
+      });
+    }
+
     response.writeHead(200, defaultCorsHeaders);
+
     response.end(JSON.stringify(storeData));
   }
 
