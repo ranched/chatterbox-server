@@ -17,6 +17,7 @@ var defaultCorsHeaders = {
   'access-control-allow-headers': 'content-type, accept',
   'access-control-max-age': 10 // Seconds.
 };
+var queryString = require('../node_modules/query-string/index.js');
 
 storeData = {
   results: [ ]
@@ -40,18 +41,39 @@ var requestHandler = function(request, response) {
   }
 
   if (request.method === 'POST') {
-
+    
     response.writeHead(201, defaultCorsHeaders);
     
     request.on('data', function(data) {
-      console.log('in RH', data);
-      storeData.results.push(JSON.parse(data.toString('utf8')));
+      //console.log('data', data);
+      //const bufferStringified = data.toString('utf8');
+      const bufferStringified = data + '';
+      
+      //console.log('bufferStringified', bufferStringified);
+      if (/^{/.test(bufferStringified)) { 
+        
+        let obj = JSON.parse(bufferStringified);
+        //console.log('--RH post received containing:', obj);
+        obj.objectId = Date.now();
+        storeData.results.push(obj);
+      
+      } else {
+
+        let obj = queryString.parse(bufferStringified);
+        //console.log('--RH post received containing:', obj);
+        obj.objectId = Date.now();
+        storeData.results.push(obj);
+      
+      }
+      
     });
+    
     
     
     response.end(storeData.toString('utf8').results);
 
   } else if (request.method === 'GET') {
+    console.log('---successful request was made---');
     response.writeHead(200, defaultCorsHeaders);
     
     response.end(JSON.stringify(storeData));

@@ -98,7 +98,7 @@ describe('server', function() {
         done();
       });
     });
-  });
+  }); 
     
   it('should should have length of 3', function(done) {
     var requestParams = {method: 'POST',

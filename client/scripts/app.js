@@ -30,14 +30,14 @@ var app = {
     app.fetch(false);
 
     // Poll for new messages
-    setInterval(function() {
+    window.x = setInterval(function() {
       app.fetch(true);
     }, 3000);
   },
 
   send: function(message) {
     //app.startSpinner();
-
+    console.log('message in send', message);
     // POST the message to the server
     $.ajax({
       url: app.server,
@@ -60,9 +60,10 @@ var app = {
     $.ajax({
       url: app.server,
       type: 'GET',
-      data: { }, //stop: '-createdAt' },
-      contentType: 'application/json',
+      //data: { }, //stop: '-createdAt' },
+      //contentType: 'application/json',
       success: function(data) {
+        console.log('data:', data);
         // Don't bother if we have nothing to work with
         if (!data.results || !data.results.length) { return; }
 
@@ -74,6 +75,7 @@ var app = {
 
         // Only bother updating the DOM if we have a new message
         if (mostRecentMessage.objectId !== app.lastMessageId) {
+          console.log('updating the dom');
           // Update the UI with the fetched rooms
           app.renderRoomList(data.results);
 
@@ -137,13 +139,14 @@ var app = {
 
   renderRoom: function(roomname) {
     // Prevent XSS by escaping with DOM methods
-    var $option = $('<option/>').val(roomname).text(roomname);
+    var $option = $('<option/>').val(roomname).roomname;
 
     // Add to select
     app.$roomSelect.append($option);
   },
 
   renderMessage: function(message) {
+    console.log('message in render message', message);
     if (!message.roomname) {
       message.roomname = 'lobby';
     }
@@ -162,7 +165,7 @@ var app = {
     }
 
     var $message = $('<br><span/>');
-    $message.text(message.text).appendTo($chat);
+    $message.text(message.message).appendTo($chat);
 
     // Add the message to the UI
     app.$chats.append($chat);
@@ -214,10 +217,10 @@ var app = {
   handleSubmit: function(event) {
     var message = {
       username: app.username,
-      text: app.$message.val(),
+      message: app.$message.val(),
       roomname: app.roomname || 'lobby'
     };
-
+    console.log('submitted message object', message);
     app.send(message);
 
     // Stop the form from submitting
