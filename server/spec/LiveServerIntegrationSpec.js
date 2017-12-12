@@ -58,22 +58,94 @@ describe('server', function() {
     request(requestParams, function(error, response, body) {
       // Now if we request the log, that message we posted should be there:
       request('http://127.0.0.1:3000/classes/messages', function(error, response, body) {
-        //console.log('body');
         var messages = JSON.parse(body).results;
-        //console.log(messages, body);
         expect(messages[0].username).to.equal('Jono');
         expect(messages[0].message).to.equal('Do my bidding!');
         done();
       });
     });
   });
-
+  
   it('Should 404 when asked for a nonexistent endpoint', function(done) {
     request('http://127.0.0.1:3000/arglebargle', function(error, response, body) {
       expect(response.statusCode).to.equal(404);
       done();
     });
   });
+  
+  it('should should have length of 2', function(done) {
+    var requestParams = {method: 'POST',
+      uri: 'http://127.0.0.1:3000/classes/messages',
+      json: {
+        username: 'Jono',
+        message: 'Do my bidding!'}
+    };
 
+    request(requestParams, function(error, response, body) {
+      console.log("ASD");
+    });
+    
+    request(requestParams, function(error, response, body) {      
+      request('http://127.0.0.1:3000/classes/messages', function(error, response, body) {
+        var messages = JSON.parse(body).results;
+        expect(messages.length).to.equal(2);
+        done();
+      });
+    });
+  });
+    
+  it('should should have length of 3', function(done) {
+    var requestParams = {method: 'POST',
+      uri: 'http://127.0.0.1:3000/classes/messages',
+      json: {
+        username: 'Jono',
+        message: 'Do my bidding!'}
+    };
 
+    request(requestParams, function(error, response, body) {
+      console.log("ASD");
+    });
+    
+    request(requestParams, function(error, response, body) {
+      console.log("ASD");
+    });
+    
+    request(requestParams, function(error, response, body) {      
+      request('http://127.0.0.1:3000/classes/messages', function(error, response, body) {
+        var messages = JSON.parse(body).results;
+        expect(messages.length).to.equal(3);
+        done();
+      });
+    });
+  });
+  
+  it('should should have length of 4', function(done) {
+    var requestParams = {method: 'POST',
+      uri: 'http://127.0.0.1:3000/classes/messages',
+      json: {
+        username: 'Jono',
+        message: 'Do my bidding!'}
+    };
+
+    request(requestParams, function(error, response, body) {
+      console.log("ASD");
+    });
+    
+    request(requestParams, function(error, response, body) {
+      console.log("ASD");
+    });
+    
+    request(requestParams, function(error, response, body) {
+      console.log("ASD");
+    });
+    
+    request(requestParams, function(error, response, body) {      
+      request('http://127.0.0.1:3000/classes/messages', function(error, response, body) {
+        var messages = JSON.parse(body).results;
+        expect(messages.length).to.equal(4);
+        done();
+      });
+    });
+  });
+      
 });

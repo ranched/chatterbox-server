@@ -224,10 +224,10 @@ var app = {
     event.preventDefault();
   },
 
-  startSpinner: function() {
-    $('.spinner img').show();
-    $('form input[type=submit]').attr('disabled', 'true');
-  },
+  // startSpinner: function() {
+  //   $('.spinner img').show();
+  //   $('form input[type=submit]').attr('disabled', 'true');
+  // },
 
   stopSpinner: function() {
     $('.spinner img').fadeOut('fast');
