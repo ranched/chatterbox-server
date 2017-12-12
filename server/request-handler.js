@@ -11,6 +11,12 @@ this file and include it in basic-server.js so that it actually works.
 *Hint* Check out the node module documentation at http://nodejs.org/api/modules.html.
 
 **************************************************************/
+var defaultCorsHeaders = {
+  'access-control-allow-origin': '*',
+  'access-control-allow-methods': 'GET, POST, PUT, DELETE, OPTIONS',
+  'access-control-allow-headers': 'content-type, accept',
+  'access-control-max-age': 10 // Seconds.
+};
 
 storeData = {
   results: [ ]
@@ -18,44 +24,45 @@ storeData = {
 
 var requestHandler = function(request, response) {
 
-  var defaultCorsHeaders = {
-    'access-control-allow-origin': '*',
-    'access-control-allow-methods': 'GET, POST, PUT, DELETE, OPTIONS',
-    'access-control-allow-headers': 'content-type, accept',
-    'access-control-max-age': 10 // Seconds.
-  };
+  var headers = defaultCorsHeaders;
+  
 
   // See the note below about CORS headers.
-  var headers = defaultCorsHeaders;
   headers['Content-Type'] = 'text/json';
 
+  if (request.url !== '/classes/messages') {
+    response.writeHead(404, defaultCorsHeaders);
+    response.end();
+  }
+
   if (request.method === 'POST') {
-  
+
+    //if (typeof request == 'object') {
+    //console.log('request:', request);
+    //request.url = 'http://127.0.0.1:3000/classes/messages' + request.url;
+    //console.log('request:', request);
+
+    //}
+    response.writeHead(201, defaultCorsHeaders);
+
     request.on('data', function(data) {
       storeData.results.push(data);
+      //console.log(storeData);
     });
 
-    response.writeHead(201, defaultCorsHeaders);
-    response.end(storeData.results);
-
-  } else {
-
-    if(request.url !== '/classes/messages') {
-      console.log("message");
-
-      request.on('end', function(data) {
-        response.writeHead(404, defaultCorsHeaders);
-        response.end(storeData.results);  
-      });
-    }
-
-    response.writeHead(200, defaultCorsHeaders);
-
     response.end(JSON.stringify(storeData));
+
+  } else if (request.method === 'GET') {
+    response.writeHead(200, defaultCorsHeaders);
+    
+    response.end(JSON.stringify(storeData));
+
   }
 
   console.log('Serving request type ' + request.method + ' for url ' + request.url);
 
 };
+
+
 
 module.exports.requestHandler = requestHandler;
