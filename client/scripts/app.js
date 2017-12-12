@@ -9,11 +9,15 @@ var app = {
   lastMessageId: 0,
   friends: {},
   messages: [],
+  rooms: ['one', 'two', 'three'],
 
   init: function() {
     // Get username
     app.username = window.location.search.substr(10);
-
+    var $dropdown = $('#rooms');
+    // $.each(rooms, function(room) {
+    //   $dropdown.append($('<option />').val(val).html(room));
+    // });
     // Cache jQuery selectors
     app.$message = $('#message');
     app.$chats = $('#chats');
@@ -222,7 +226,7 @@ var app = {
     };
     console.log('submitted message object', message);
     app.send(message);
-
+    $('#message').val('');
     // Stop the form from submitting
     event.preventDefault();
   },
