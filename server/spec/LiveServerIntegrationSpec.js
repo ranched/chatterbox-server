@@ -80,6 +80,12 @@ describe('server', function() {
         username: 'Jono',
         message: 'Do my bidding!'}
     };
+    
+    request({method: 'DELETE',
+      uri: 'http://127.0.0.1:3000/classes/messages'
+    }, function(error, response, body) {
+      console.log("clear");
+    });
 
     request(requestParams, function(error, response, body) {
       console.log("ASD");
@@ -101,6 +107,12 @@ describe('server', function() {
         username: 'Jono',
         message: 'Do my bidding!'}
     };
+    
+    request({method: 'DELETE',
+      uri: 'http://127.0.0.1:3000/classes/messages'
+    }, function(error, response, body) {
+      console.log("clear");
+    });
 
     request(requestParams, function(error, response, body) {
       console.log("ASD");
@@ -126,6 +138,12 @@ describe('server', function() {
         username: 'Jono',
         message: 'Do my bidding!'}
     };
+
+    request({method: 'DELETE',
+      uri: 'http://127.0.0.1:3000/classes/messages'
+    }, function(error, response, body) {
+      console.log("clear");
+    });
 
     request(requestParams, function(error, response, body) {
       console.log("ASD");

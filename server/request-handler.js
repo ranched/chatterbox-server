@@ -34,6 +34,10 @@ var requestHandler = function(request, response) {
     response.writeHead(404, defaultCorsHeaders);
     response.end();
   }
+  
+  if (request.method === 'DELETE') {
+    storeData.results = [];
+  }
 
   if (request.method === 'POST') {
 
