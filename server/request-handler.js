@@ -37,20 +37,15 @@ var requestHandler = function(request, response) {
 
   if (request.method === 'POST') {
 
-    //if (typeof request == 'object') {
-    //console.log('request:', request);
-    //request.url = 'http://127.0.0.1:3000/classes/messages' + request.url;
-    //console.log('request:', request);
-
-    //}
     response.writeHead(201, defaultCorsHeaders);
-
+    
     request.on('data', function(data) {
-      storeData.results.push(data);
-      //console.log(storeData);
+      console.log('in RH', data);
+      storeData.results.push(JSON.parse(data.toString('utf8')));
     });
-
-    response.end(JSON.stringify(storeData));
+    
+    
+    response.end(storeData.toString('utf8').results);
 
   } else if (request.method === 'GET') {
     response.writeHead(200, defaultCorsHeaders);

@@ -93,10 +93,10 @@ describe('Node Server Request Listener Function', function() {
     
     expect(res._responseCode).to.equal(200);
     var messages = JSON.parse(res._data).results;
-    var cart = JSON.parse(messages[0]);
+    //var cart = JSON.parse(messages[0]);
     expect(messages.length).to.be.above(0);
-    expect(cart.username).to.equal('Jono');
-    expect(cart.message).to.equal('Do my bidding!');
+    expect(messages[0].username).to.equal('Jono');
+    expect(messages[0].message).to.equal('Do my bidding!');
     expect(res._ended).to.equal(true);
   });
 
